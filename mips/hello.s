@@ -21,7 +21,10 @@ __start:
 # 3. run -       $ qemu-mips ./hello
 
 
+# 0011 1010 0101 0000 0000 0101 0100 0000
   li $v0, 4004
+#
+  
   li $a0, 1
   la $a1, msg
   li $a2, 13
