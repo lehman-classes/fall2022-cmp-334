@@ -20,6 +20,7 @@ spelling_words:	.word	word1, word2, word3, word4, word5, word6, word7, word8, wo
 prompt: 	.asciiz "Type a letter to complete the spelling of "
 
 .text
+	
 	# STEP 1
 	jal select_random_word
 	# $a0 = randomly selected word
