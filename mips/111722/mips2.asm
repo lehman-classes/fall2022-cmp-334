@@ -11,7 +11,7 @@ tuco:		.asciiz "Tuco"
 salamanca:	.asciiz "Salamanca"
 eladio:		.asciiz "Eladio"
 
-
+#                      0       4       8      12    16     20    24   28    32          36
 characters: 	.word walter, skyler, jesse, saul, marie, hank, gus, tuco, salamanca, eladio 
 
 
@@ -29,6 +29,15 @@ result:		.space 20
 	# save results
 	move $s0, $v0 # selected name
 	move $s1, $a0 # name index
+
+#move $a0, $s0
+#li $v0, 4
+#syscall
+
+	move $a0, $s0
+	li $a1, 2
+	jal print_chars
+	
 	
 	# print results
 	addi $a0, $s1, 0
@@ -159,6 +168,34 @@ random:
 # FUNCTION strlen(String value)
 # Argument $a0 = value
 # returns result in $v0
+
+# Saul ===> S_ul
+
+print_chars:
+	li $t0, 0
+	move $t1, $a0
+	next_p:
+		lb $t2, 0($t1) 
+		beqz $t2, print_chars_ret
+		
+		beq $a1, $t0, print_x
+		# print it
+		li $v0, 11
+		move $a0, $t2
+		syscall
+		j increment
+	print_x:
+		li $v0, 11
+		li $a0, 95
+		syscall
+	increment:
+		addi $t1, $t1, 1
+		addi $t0, $t0, 1
+		j next_p
+	print_chars_ret:
+		jr $ra
+
+
 strlen:
 	li $v0, 0
 	next:
@@ -180,24 +217,22 @@ select_random_name:
 	move $t1, $a1 # array length
 	
 	# get random int 
-	addi $a0, $t1, 0 
-	jal random
+	#addi $a0, $t1, 0 
+	
+	move $a1, $t1
+	li $v0, 42
+	syscall
 	
 	# save index
-	move $t2, $v0
+	move $t2, $a0
 	
 	# mult random int x 4
 	mulou $t3, $t2, 4
-
-
-#lw $a0, characters($t3)
-#li $v0, 4
-#syscall
 			
 	# result
 	lw $v0, characters($t3)
 	move $a0, $t2
-	
+
 	jr $ra
 		
 		
